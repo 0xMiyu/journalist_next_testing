@@ -53,7 +53,8 @@ export const GetArticle: FC = () => {
             let data  = await (await fetch(nft.uri)).json();
             // console.log(data)
             let pdfurl = data.properties.files[0].uri;
-            console.log(pdfurl)
+            console.log(pdas);
+            // console.log(pdfurl)
             console.log(Date.now())
             
         } catch (error: any) {
