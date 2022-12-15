@@ -65,14 +65,15 @@ export const UploadArticle: FC = () => {
                 new PublicKey(PROGRAM_ID)
             );
             const transaction = new Transaction();
-            const ix = journalistProgram.methods.upload()??????????????????;
+            const ix = await journalistProgram.methods.upload(author, mint_address, timestamp).instruction();
             transaction.add(ix);
-            // await connection.confirmTransaction({
-            //     blockhash: (await connection.getLatestBlockhash("max")).blockhash,
-            //     lastValidBlockHeight: (await connection.getLatestBlockhash("max")).lastValidBlockHeight,
-            //     signature: tx,
-            // });
-            // alert("Transaction Confirmed!");
+            const signature = await sendTransaction(transaction, connection);
+            await connection.confirmTransaction({
+                blockhash: (await connection.getLatestBlockhash("max")).blockhash,
+                lastValidBlockHeight: (await connection.getLatestBlockhash("max")).lastValidBlockHeight,
+                signature: signature,
+            });
+            alert("Transaction Confirmed!");
                 
             console.log("werk?");
         } catch (error: any) {
