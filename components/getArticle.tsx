@@ -29,7 +29,7 @@ export const GetArticle: FC = () => {
         ])
     );
     const wallet = new NodeWallet(dummyKp);
-    const PROGRAM_ID = "CV1DphaGKtzK1mMskXjDhSGQAnaXEqtq2dqFYSnXMrJm";
+    const PROGRAM_ID = "AMNRPsNsDgSxWmxJ3WJ4PwXXSNhGcCbseCYCxqvEDGGV";
     
     const provider = new AnchorProvider(
         connection,
@@ -43,19 +43,23 @@ export const GetArticle: FC = () => {
     );
     const onClick = useCallback(async () => {
         try {
+            //returns array of all pdas that the program owns
             let pdas = await journalistProgram.account.articleAccountState.all();
+
             // console.log(pdas);
             // let lmfao = await connection.getParsedAccountInfo(new PublicKey("GoMp6aZ3U7KxsxVCo3FmZ8gkEaxPhcE9aL82Z695zrss"))
-            // 
-            const mintAddress = new PublicKey(pdas[2].account.mintAddress)
-            const nft = await metaplex.nfts().findByMint({mintAddress})
-            // console.log(nft.uri);
+
+            // the [2] is hardcoded, just loop through elements in the pdas array
+
+            const mintAddress = new PublicKey(pdas[1].account.mintAddress);
+            const nft = await metaplex.nfts().findByMint({mintAddress});
+    
             let data  = await (await fetch(nft.uri)).json();
-            // console.log(data)
-            let pdfurl = data.properties.files[0].uri;
-            console.log(pdas);
+            let pdfurl = data.properties.files.uri;
+            console.log(data);
+
             // console.log(pdfurl)
-            console.log(Date.now())
+            // console.log(Date.now())
             
         } catch (error: any) {
             alert(error);
